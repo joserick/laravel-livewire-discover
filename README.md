@@ -9,7 +9,7 @@ You can install the package via composer:
 ``` bash
 composer require joserick/laravel-livewire-discover
 ```
-## Use
+## Config
 Add to *AppServiceProvider.php*
 ``` php
 public function boot(): void
@@ -34,7 +34,12 @@ php artisan vendor:publish --tag livewire-discover-config
 	'new-components' => 'User\\Repository\\Livewire',
 ],
 ```
-
+## Use
+``` html
+// Call components.
+<livewire:my-components-devices />
+<livewire:new-components-devices-table />
+```
 ## License
 
 The GNU Public License (GPLv3). Please see [License File](https://github.com/joserick/laravel-livewire-discover/blob/master/LICENSE) for more information.
