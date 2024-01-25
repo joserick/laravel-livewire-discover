@@ -1,0 +1,35 @@
+{
+    "name": "joserick/laravel-livewire-discover",
+    "description": "Discover and autoload multiples components of livewire by convention (componentNamespace)",
+    "type": "package",
+    "authors": [
+        {
+            "name": "joserick",
+            "email": "support@joserick.com",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "spatie/laravel-package-tools": "^1.16",
+        "livewire/livewire": "^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Joserick\\LaravelLivewireDiscover\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Joserick\\LaravelLivewireDiscover\\LaravelLivewireDiscoverServiceProvider"
+            ],
+            "aliases": {
+                "LaravelLivewireDiscover": "Joserick\\LaravelLivewireDiscover\\Facades\\LaravelLivewireDiscover"
+            }
+        }
+    }
+}
