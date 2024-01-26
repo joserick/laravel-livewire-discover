@@ -1,3 +1,4 @@
+
 # Laravel Livewire Discover
 
 Discover and autoload multiples namespace for livewire components.
@@ -37,8 +38,8 @@ php artisan vendor:publish --tag livewire-discover-config
 ## Use
 ``` html
 // Call components.
-<livewire:my-components-devices />
-<livewire:new-components-devices-table />
+<livewire:my-components-devices /> <!-- Class: Namespace\Livewire\Devices; -->
+<livewire:new-components-devices-table /> <!-- Class: User\Repository\Livewire\DevicesTable; -->
 ```
 ## License
 
