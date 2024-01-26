@@ -29,15 +29,4 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
         // Load the Livewire components of xposbox.
         $this->app->instance(ComponentRegistry::class, new LaravelLivewireDiscoverComponentRegistry());
     }
-
-    /**
-     * Booting the package.
-     *
-     * @return void
-     */
-    public function bootingPackage(): void
-    {
-        // Load the Blade components
-        Blade::componentNamespace('Kodtipo\\Xposbox\\View\\Components', 'xposbox');
-    }
 }
