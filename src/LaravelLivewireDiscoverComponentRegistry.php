@@ -4,19 +4,18 @@ namespace Joserick\LaravelLivewireDiscover;
 
 use ArrayIterator;
 use Illuminate\Support\Str;
-use Livewire\Exceptions\ComponentNotFoundException;
+use Joserick\LaravelLivewireDiscover\Exceptions\ComponentNotFoundException;
+use Livewire\Exceptions\ComponentNotFoundException as LivewireComponentNotFoundException;
 use Livewire\Mechanisms\ComponentRegistry;
 
 class LaravelLivewireDiscoverComponentRegistry extends ComponentRegistry
 {
     protected function getNameAndClass($nameComponentOrClass)
     {
-        $class_namespace = config('livewire.class_namespace');
-
         $name_class = $this->getNameAndClassDiscovered($nameComponentOrClass,
-            collect(config('laravel-livewire-discover.class_namespaces'))->getIterator());
+            app(LaravelLivewireDiscover::class)->getClassNamespaces()->getIterator());
 
-        config(['livewire.class_namespace' => $class_namespace]);
+        config(['livewire.class_namespace' => app(LaravelLivewireDiscover::class)->getClassNamespace()]);
 
         return $name_class;
     }
@@ -25,7 +24,7 @@ class LaravelLivewireDiscoverComponentRegistry extends ComponentRegistry
     {
         try {
             return parent::getNameAndClass($nameComponentOrClass);
-        } catch (ComponentNotFoundException $th) {
+        } catch (LivewireComponentNotFoundException $th) {
             if ($class_namespaces->valid()) {
                 if (Str::startsWith($nameComponentOrClass, $class_namespaces->key())) {
                     $nameComponentOrClass = Str::replaceFirst($class_namespaces->key().'-', '', $nameComponentOrClass);
@@ -33,7 +32,7 @@ class LaravelLivewireDiscoverComponentRegistry extends ComponentRegistry
                 config(['livewire.class_namespace' => $class_namespaces->current()]);
                 $class_namespaces->next();
             } else {
-                throw $th;
+                throw new ComponentNotFoundException($class_namespaces->getArrayCopy(), $th);
             }
 
             return $this->getNameAndClassDiscovered($nameComponentOrClass, $class_namespaces);

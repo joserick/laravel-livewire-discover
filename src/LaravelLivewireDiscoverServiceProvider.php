@@ -2,7 +2,6 @@
 
 namespace Joserick\LaravelLivewireDiscover;
 
-use Illuminate\Support\Facades\Blade;
 use Livewire\LivewireManager;
 use Livewire\Mechanisms\ComponentRegistry;
 use Spatie\LaravelPackageTools\Package;
@@ -21,6 +20,10 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-livewire-discover')
             ->hasConfigFile('laravel-livewire-discover');
+
+        $this->app->alias(LaravelLivewireDiscover::class, 'laravel-livewire-discover');
+
+        $this->app->singleton(LaravelLivewireDiscover::class);
 
         $this->app->extend(LivewireManager::class, function () {
             return new LaravelLivewireDiscoverManager();

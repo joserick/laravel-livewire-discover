@@ -6,13 +6,26 @@ use Livewire\LivewireManager;
 
 class LaravelLivewireDiscoverManager extends LivewireManager
 {
-    public function componentNamespace(string $namespace, string $prefix) {
-        $class_namespaces = collect(config('laravel-livewire-discover.class_namespaces'));
-        $class_namespaces->put($prefix, $namespace);
-        config(['laravel-livewire-discover.class_namespaces' => $class_namespaces->toArray()]);
+    /**
+     * Add a class / namespace prefix to the resolver.
+     *
+     * @param  string  $namespace
+     * @param  string  $prefix
+     * @return void
+     */
+    public function componentNamespace(string $namespace, string $prefix): void
+    {
+        app(LaravelLivewireDiscover::class)->add($prefix, $namespace);
     }
 
-    public function discover(string $namespace, string $prefix)
+    /**
+     * Discover the components of the given namespace.
+     *
+     * @param  string  $namespace
+     * @param  string  $prefix
+     * @return void
+     */
+    public function discover(string $namespace, string $prefix): void
     {
         $this->componentNamespace($namespace, $prefix);
     }

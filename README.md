@@ -30,7 +30,7 @@ php artisan vendor:publish --tag livewire-discover-config
 ``` php
 // Load the namespace to Livewire components.
 'class_namespaces' => [
-	// 'prefix' => '//namespace//',
+	// 'prefix' => 'namespace\\package',
 	'my-components' => 'Namespace\\Livewire',
 	'new-components' => 'User\\Repository\\Livewire',
 ],
