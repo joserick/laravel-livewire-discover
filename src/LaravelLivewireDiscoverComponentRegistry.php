@@ -10,6 +10,15 @@ use Livewire\Mechanisms\ComponentRegistry;
 
 class LaravelLivewireDiscoverComponentRegistry extends ComponentRegistry
 {
+    function new($nameOrClass, $id = null)
+    {
+        $component = parent::new($nameOrClass, $id);
+
+        $component->updateNameFromPrefix();
+
+        return $component;
+    }
+
     protected function getNameAndClass($nameComponentOrClass)
     {
         $name_class = $this->getNameAndClassDiscovered($nameComponentOrClass,

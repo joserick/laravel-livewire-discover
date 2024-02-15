@@ -2,6 +2,7 @@
 
 namespace Joserick\LaravelLivewireDiscover;
 
+use Livewire\Component;
 use Livewire\LivewireManager;
 use Livewire\Mechanisms\ComponentRegistry;
 use Spatie\LaravelPackageTools\Package;
@@ -29,7 +30,22 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             return new LaravelLivewireDiscoverManager();
         });
 
-        // Load the Livewire components of xposbox.
         $this->app->instance(ComponentRegistry::class, new LaravelLivewireDiscoverComponentRegistry());
+    }
+
+    /**
+     * Booting the package.
+     *
+     * @return void
+     */
+    public function bootingPackage(): void
+    {
+        Component::macro('updateNameFromPrefix', function () {
+            $prefix = app(LaravelLivewireDiscover::class)->getPrefixFromClass(get_class($this));
+
+            if ($prefix) {
+                $this->setName($prefix.'-'.str(substr(strrchr(get_class($this), '\\'), 1))->kebab());
+            }
+        });
     }
 }

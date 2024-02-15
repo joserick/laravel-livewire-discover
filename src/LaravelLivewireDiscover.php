@@ -3,6 +3,7 @@
 namespace Joserick\LaravelLivewireDiscover;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Livewire\Mechanisms\ComponentRegistry;
 
 class LaravelLivewireDiscover extends ComponentRegistry
@@ -43,10 +44,27 @@ class LaravelLivewireDiscover extends ComponentRegistry
     /**
      * Get the collection of class namespaces to discover.
      *
-     * @return string
+     * @return Collection
      */
     public function getClassNamespaces() : Collection
     {
         return $this->class_namespaces;
+    }
+
+    /**
+     * Get the prefix from the class.
+     *
+     * @param  string  $class
+     * @return string|bool
+     */
+    function getPrefixFromClass(string $class) : string|bool
+    {
+        foreach ($this->class_namespaces as $prefix => $namespace) {
+            if (Str::startsWith($class, $namespace)) {
+                return $prefix;
+            }
+        }
+
+        return false;
     }
 }
