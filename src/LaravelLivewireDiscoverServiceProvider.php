@@ -22,9 +22,9 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             ->name('laravel-livewire-discover')
             ->hasConfigFile('laravel-livewire-discover');
 
-        $this->app->alias(LaravelLivewireDiscover::class, 'laravel-livewire-discover');
+        $this->app->alias(LaravelLivewireDiscoverData::class, 'laravel-livewire-discover');
 
-        $this->app->singleton(LaravelLivewireDiscover::class);
+        $this->app->singleton(LaravelLivewireDiscoverData::class);
 
         $this->app->extend(LivewireManager::class, function () {
             return new LaravelLivewireDiscoverManager();
@@ -40,11 +40,11 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
      */
     public function bootingPackage(): void
     {
-        Component::macro('updateNameFromPrefix', function () {
-            $prefix = app(LaravelLivewireDiscover::class)->getPrefixFromClass(get_class($this));
+        Component::macro('updateNameFromClass', function () {
+            $alias = app(LaravelLivewireDiscoverData::class)->getAliasFormClass(get_class($this));
 
-            if ($prefix) {
-                $this->setName($prefix.'-'.str(substr(strrchr(get_class($this), '\\'), 1))->kebab());
+            if ($alias) {
+                $this->setName($alias);
             }
         });
     }

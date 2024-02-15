@@ -14,17 +14,37 @@ class LaravelLivewireDiscoverComponentRegistry extends ComponentRegistry
     {
         $component = parent::new($nameOrClass, $id);
 
-        $component->updateNameFromPrefix();
+        $component->updateNameFromClass();
 
         return $component;
+    }
+
+    function getName($nameOrClassOrComponent)
+    {
+        if (is_string($nameOrClassOrComponent)
+            && $class = LaravelLivewireDiscover::getClassFromNameWithNamespace($nameOrClassOrComponent)) {
+            return LaravelLivewireDiscover::getAliasFormClass($class);
+        }
+
+        return parent::getName($nameOrClassOrComponent);
+    }
+
+    function getClass($nameOrClassOrComponent)
+    {
+        if (is_string($nameOrClassOrComponent)
+            && $class = LaravelLivewireDiscover::getClassFromNameWithNamespace($nameOrClassOrComponent)) {
+            return $class;
+        }
+
+        return parent::getClass($nameOrClassOrComponent);
     }
 
     protected function getNameAndClass($nameComponentOrClass)
     {
         $name_class = $this->getNameAndClassDiscovered($nameComponentOrClass,
-            app(LaravelLivewireDiscover::class)->getClassNamespaces()->getIterator());
+            LaravelLivewireDiscover::getClassNamespaces()->getIterator());
 
-        config(['livewire.class_namespace' => app(LaravelLivewireDiscover::class)->getClassNamespace()]);
+        config(['livewire.class_namespace' => LaravelLivewireDiscover::getClassNamespace()]);
 
         return $name_class;
     }
