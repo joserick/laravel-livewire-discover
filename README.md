@@ -1,4 +1,3 @@
-
 # Laravel Livewire Discover
 
 Discover and autoload multiples namespace for livewire components.
@@ -10,6 +9,8 @@ You can install the package via composer:
 ``` bash
 composer require joserick/laravel-livewire-discover
 ```
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/joserick)
+
 ## Config
 Add to *AppServiceProvider.php*
 ``` php
@@ -44,4 +45,3 @@ php artisan vendor:publish --tag livewire-discover-config
 ## License
 
 The GNU Public License (GPLv3). Please see [License File](https://github.com/joserick/laravel-livewire-discover/blob/master/LICENSE) for more information.
-
