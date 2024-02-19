@@ -1,6 +1,6 @@
 # Laravel Livewire Discover
 
-Discover and autoload multiples namespace for livewire components.
+Automatically discover and load/register multiple/different class namespaces for Livewire components.
 
 ## Installation
 
