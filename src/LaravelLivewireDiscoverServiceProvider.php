@@ -2,9 +2,9 @@
 
 namespace Joserick\LaravelLivewireDiscover;
 
-use Livewire\Component;
+use Livewire\Livewire;
 use Livewire\LivewireManager;
-use Livewire\Mechanisms\ComponentRegistry;
+use Livewire\Mechanisms\ComponentRegistry as LivewireComponentRegistry;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -30,7 +30,7 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             return new LaravelLivewireDiscoverManager();
         });
 
-        $this->app->instance(ComponentRegistry::class, new LaravelLivewireDiscoverComponentRegistry());
+        $this->app->instance(LivewireComponentRegistry::class, new ComponentRegistry());
     }
 
     /**
@@ -40,12 +40,6 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
      */
     public function bootingPackage(): void
     {
-        Component::macro('updateNameFromClass', function () {
-            $alias = app(LaravelLivewireDiscoverData::class)->getAliasFormClass(get_class($this));
-
-            if ($alias) {
-                $this->setName($alias);
-            }
-        });
+        Livewire::resolveMissingComponent(fn (string &$name) => ComponentResolver::resolve($name));
     }
 }
