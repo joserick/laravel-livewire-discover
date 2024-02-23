@@ -1,8 +1,7 @@
-
 # Laravel Livewire Discover
 ![Packagist Downloads](https://img.shields.io/packagist/dt/joserick/laravel-livewire-discover?color=blue)   ![GitHub License](https://img.shields.io/github/license/joserick/laravel-livewire-discover) ![GitHub Release](https://img.shields.io/github/v/release/joserick/laravel-livewire-discover?color=2da711)
 
-Automatically discover and load/register multiple/different class namespaces for Livewire components. 
+Automatically discover and load/register multiple/different class namespaces for Livewire components.
 
 ## Installation
 
@@ -11,6 +10,7 @@ You can install the package via composer:
 ``` bash
 composer require joserick/laravel-livewire-discover
 ```
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/joserick)
 ## Config
 Add to *AppServiceProvider.php*
 ``` php
