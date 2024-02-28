@@ -40,6 +40,6 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
      */
     public function bootingPackage(): void
     {
-        Livewire::resolveMissingComponent(fn (string &$name) => ComponentResolver::resolve($name));
+        Livewire::resolveMissingComponent([ComponentResolver::class, 'resolve']);
     }
 }
