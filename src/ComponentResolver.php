@@ -91,6 +91,7 @@ class ComponentResolver
         }
 
         if ($class = self::getClassFromNameComponent($alias_or_name_component)) {
+            $alias_or_name_component = self::getAliasFromClass($class);
             return $class;
         }
 
