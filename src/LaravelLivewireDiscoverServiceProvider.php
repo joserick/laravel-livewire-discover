@@ -20,7 +20,11 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-livewire-discover')
-            ->hasConfigFile('laravel-livewire-discover');
+            ->hasConfigFile('laravel-livewire-discover')
+            ->hasCommands(
+                Commands\MakeDiscoverCommand::class,
+                Commands\MakeLivewireDiscoverCommand::class,
+            );
 
         $this->app->alias(LaravelLivewireDiscoverData::class, 'laravel-livewire-discover');
 

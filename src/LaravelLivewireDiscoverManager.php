@@ -15,7 +15,7 @@ class LaravelLivewireDiscoverManager extends LivewireManager
      */
     public function componentNamespace(string $namespace, string $prefix): void
     {
-        LaravelLivewireDiscover::add($prefix, $namespace);
+        $this->discover($namespace, $prefix);
     }
 
     /**
@@ -25,8 +25,22 @@ class LaravelLivewireDiscoverManager extends LivewireManager
      * @param  string  $prefix
      * @return void
      */
-    public function discover(string $namespace, string $prefix): void
+    public function discover(string $prefix, string|array $namespace, ?string $class_path = null): void
     {
-        $this->componentNamespace($namespace, $prefix);
+        LaravelLivewireDiscover::add($prefix, $namespace, $class_path);
+    }
+
+
+    /**
+     * Discover multiple components from the given array.
+     *
+     * @param  array  $discovers
+     * @return void
+     */
+    public function discovers(array $discovers): void
+    {
+        foreach ($discovers as $prefix => $namespace) {
+            $this->discover($prefix, $namespace);
+        }
     }
 }

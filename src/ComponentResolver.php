@@ -14,8 +14,12 @@ class ComponentResolver
      */
     public static function getPrefixFromClass(string $class) : string|bool
     {
-        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $namespace) {
-            if (Str::startsWith($class, $namespace)) {
+        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $class_namespace) {
+            if (is_array($class_namespace)) {
+                $class_namespace = $class_namespace['class_namespace'];
+            }
+
+            if (Str::startsWith($class, $class_namespace)) {
                 return $prefix;
             }
         }
@@ -32,14 +36,14 @@ class ComponentResolver
     public static function getAliasFromClass(string $class) : string|bool
     {
         if ($prefix = self::getPrefixFromClass($class)) {
-            return $prefix.'-'.str(substr(strrchr($class, '\\'), 1))->kebab();
+            return $prefix.'.'.str(substr(strrchr($class, '\\'), 1))->kebab();
         }
 
         return $prefix;
     }
 
     /**
-     * Get the class from name with namespace.
+     * Get the class from class_namespace.
      *
      * @param  string  $nameComponent
      * @return string|bool
@@ -65,9 +69,16 @@ class ComponentResolver
      */
     public static function getClassFromAlias(string $alias) : string|bool
     {
-        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $namespace) {
+        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $class_namespace) {
+            if (is_array($class_namespace)) {
+                $class_namespace = $class_namespace['class_namespace'];
+            }
+
             if (Str::startsWith($alias, $prefix)) {
-                $class = $namespace . '\\' . Str::studly(substr($alias, strlen($prefix) + 1));
+                $class = $class_namespace . '\\' . Str::studly(substr($alias, strlen($prefix) + 1));
+                if (Str::contains($class, '.')) {
+                    return self::getClassFromNameComponent($class);
+                }
 
                 if (class_exists($class)) {
                     return $class;
