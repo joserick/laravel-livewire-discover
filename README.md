@@ -1,5 +1,3 @@
-
-
 ![laravel_livewire_discover.jpg](https://joserick.com/livewire_discover.jpg)
 # Laravel Livewire Discover
 ![Packagist Downloads](https://img.shields.io/packagist/dt/joserick/laravel-livewire-discover?color=blue)   ![GitHub License](https://img.shields.io/github/license/joserick/laravel-livewire-discover) ![GitHub Release](https://img.shields.io/github/v/release/joserick/laravel-livewire-discover?color=2da711)
@@ -20,25 +18,25 @@ Add to *AppServiceProvider.php*
 ``` php
 public function boot(): void
 {
-	// Load multiples namespace for Livewire components.
-	Livewire::discovers([
-      'my-components', 'Namespaces\\Livewire',
-      'new-components', 'User\\Repository\\Livewire',
-	]);
-	...
-	// Or individually
-	Livewire::discover('my-components', 'Namespaces\\Livewire');
-	Livewire::discover('new-components', 'User\\Repository\\Livewire');
+  // Load multiples namespace for Livewire components.
+  Livewire::discovers([
+    'my-components', 'Namespaces\\Livewire',
+    'new-components', 'User\\Repository\\Livewire',
+  ]);
+
+  // Or individually
+  Livewire::discover('my-components', 'Namespaces\\Livewire');
+  Livewire::discover('new-components', 'User\\Repository\\Livewire');
 }
 ```
 Or if you like, use "componentNamespace" function as in [Blade Templates](https://laravel.com/docs/blade#clipText-53)
 ``` php
 public function boot(): void
 {
-	// Load multiples namespace for Livewire components.
-	Livewire::componentNamespace('Namespaces\\Livewire', 'my-components');
-	Livewire::componentNamespace('User\\Repository\\Livewire', 'new-components');
-	...
+  // Load multiples namespace for Livewire components.
+  Livewire::componentNamespace('Namespaces\\Livewire', 'my-components');
+  Livewire::componentNamespace('User\\Repository\\Livewire', 'new-components');
+  // ...
 }
 ```
 **Or** use the config: *'config/laravel-livewire-discover.php'*
@@ -48,9 +46,9 @@ php artisan vendor:publish --tag livewire-discover-config
 ``` php
 // Load the namespace to Livewire components.
 'class_namespaces' => [
-	// 'prefix' => 'class\\namespace',
-	'my-components' => 'Namespaces\\Livewire',
-	'new-components' => 'User\\Repository\\Livewire',
+  // 'prefix' => 'class\\namespace',
+  'my-components' => 'Namespaces\\Livewire',
+  'new-components' => 'User\\Repository\\Livewire',
 ],
 ```
 ## Use
@@ -78,7 +76,7 @@ If you would like to automatically create components in a specific directory bas
 ``` php
 public function boot(): void
 {
-	Livewire::discover('my-components', ['Namespaces\\Livewire', '/path/livewire']);
+  Livewire::discover('my-components', ['Namespaces\\Livewire', '/path/livewire']);
 }
 ```
 ## Creating components
