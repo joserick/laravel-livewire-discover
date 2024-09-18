@@ -80,7 +80,7 @@ public function boot(): void
 }
 ```
 ## Creating components
-You can create the files automatically using the following Artisan command. In the process it will ask you for the suffix to use, don't forget to put the path in the prefix settings.
+You can create the files automatically using the following Artisan command. In the process it will ask you for the prefix to use, don't forget to put the path in the prefix settings.
 ```bash
 php artisan make:livewire-discover RegisterAdmin
 ```
