@@ -76,7 +76,7 @@ If you would like to automatically create components in a specific directory bas
 ``` php
 public function boot(): void
 {
-  Livewire::discover('my-components', ['Namespaces\\Livewire', '/path/livewire']);
+  Livewire::discover('my-components', 'Namespaces\\Livewire', '/path/livewire');
 }
 ```
 ## Creating components
