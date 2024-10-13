@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \Joserick\LaravelLivewireDiscover\LaravelLivewireDiscoverData
  */
-
 class LaravelLivewireDiscover extends Facade
 {
     protected static function getFacadeAccessor()

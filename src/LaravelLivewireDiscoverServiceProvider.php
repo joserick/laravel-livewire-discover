@@ -12,9 +12,6 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
 {
     /**
      * Configure the package.
-     *
-     * @param  \Spatie\LaravelPackageTools\Package $package
-     * @return void
      */
     public function configurePackage(Package $package): void
     {
@@ -31,16 +28,14 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
         $this->app->singleton(LaravelLivewireDiscoverData::class);
 
         $this->app->extend(LivewireManager::class, function () {
-            return new LaravelLivewireDiscoverManager();
+            return new LaravelLivewireDiscoverManager;
         });
 
-        $this->app->instance(LivewireComponentRegistry::class, new ComponentRegistry());
+        $this->app->instance(LivewireComponentRegistry::class, new ComponentRegistry);
     }
 
     /**
      * Booting the package.
-     *
-     * @return void
      */
     public function bootingPackage(): void
     {

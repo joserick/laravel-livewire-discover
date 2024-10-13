@@ -5,8 +5,8 @@ namespace Joserick\LaravelLivewireDiscover\Commands;
 use Joserick\LaravelLivewireDiscover\LaravelLivewireDiscover;
 use Livewire\Features\SupportConsoleCommands\Commands\ComponentParser;
 use Livewire\Features\SupportConsoleCommands\Commands\MakeCommand;
-use Symfony\Component\Console\Attribute\AsCommand;
 use ReflectionClass;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'livewire-discover:make')]
 class MakeDiscoverCommand extends MakeCommand
@@ -17,11 +17,13 @@ class MakeDiscoverCommand extends MakeCommand
 
     protected $class_path;
 
-    public function handle(){
+    public function handle()
+    {
         $class_namespaces = LaravelLivewireDiscover::getClassNamespaces();
 
         if ($class_namespaces->isEmpty()) {
             $this->error('There are no Livewire-Discover prefixes defined.');
+
             return;
         }
 
@@ -29,13 +31,13 @@ class MakeDiscoverCommand extends MakeCommand
 
         if (is_array($class_namespaces[$prefix]) && isset($class_namespaces[$prefix]['class_path'])) {
             $this->class_path = $class_namespaces[$prefix]['class_path'];
-        }else{
+        } else {
             $this->error("There is no class path defined for the prefix $prefix");
+
             return;
         }
 
-        config(['livewire.class_namespace' =>
-            $class_namespaces[$prefix]['class_namespace'] ?? $class_namespaces[$prefix]]);
+        config(['livewire.class_namespace' => $class_namespaces[$prefix]['class_namespace'] ?? $class_namespaces[$prefix]]);
 
         $this->input->setOption('inline', true);
 

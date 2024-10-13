@@ -15,7 +15,8 @@
         "livewire/livewire": "^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.5"
+        "orchestra/testbench": "^8.5",
+        "laravel/pint": "^1.18"
     },
     "autoload": {
         "psr-4": {
