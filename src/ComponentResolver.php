@@ -57,7 +57,7 @@ class ComponentResolver
             }
 
             if (str($alias)->startsWith($prefix)) {
-                $class = $class_namespace.'\\'.Str::studly(substr($alias, strlen($prefix) + 1));
+                $class = $class_namespace.'\\'.str($alias)->substr(strlen($prefix) + 1)->studly();
                 if (str($class)->contains('.')) {
                     return self::getClassFromNameComponent($class);
                 }
