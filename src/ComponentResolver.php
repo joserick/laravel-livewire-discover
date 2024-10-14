@@ -28,7 +28,7 @@ class ComponentResolver
     public static function getAliasFromClass(string $class): string|bool
     {
         if ($prefix = self::getPrefixFromClass($class)) {
-            return $prefix.'.'.str(substr(strrchr($class, '\\'), 1))->kebab();
+            return $prefix.'.'.str($class)->afterLast('\\')->kebab();
         }
 
         return false;
@@ -52,12 +52,13 @@ class ComponentResolver
     public static function getClassFromAlias(string $alias): string|bool
     {
         foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $class_namespace) {
-            if (is_array($class_namespace)) {
-                $class_namespace = $class_namespace['class_namespace'];
-            }
-
             if (str($alias)->startsWith($prefix)) {
+                if (is_array($class_namespace)) {
+                    $class_namespace = $class_namespace['class_namespace'];
+                }
+
                 $class = $class_namespace.'\\'.str($alias)->substr(strlen($prefix) + 1)->studly();
+
                 if (str($class)->contains('.')) {
                     return self::getClassFromNameComponent($class);
                 }
