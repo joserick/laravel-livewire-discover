@@ -11,7 +11,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'livewire-discover:make')]
 class MakeDiscoverCommand extends MakeCommand
 {
-    protected $signature = 'livewire-discover:make {name} {--force} {--inline} {--test} {--pest} {--stub= : If you have several stubs, stored in subfolders }';
+    protected $signature = 'livewire-discover:make {name} {--prefix= : The prefix to use} {--force} {--inline} {--test} {--pest} {--stub= : If you have several stubs, stored in subfolders }';
 
     protected $description = 'Create a new Livewire Discover component';
 
@@ -27,7 +27,7 @@ class MakeDiscoverCommand extends MakeCommand
             return;
         }
 
-        $prefix = $this->choice('Select the prefix to use', $class_namespaces->keys()->toArray());
+        $prefix = $this->option('prefix') ?? $this->choice('Select the prefix to use', $class_namespaces->keys()->toArray());
 
         if (is_array($class_namespaces[$prefix]) && isset($class_namespaces[$prefix]['class_path'])) {
             $this->class_path = $class_namespaces[$prefix]['class_path'];
@@ -50,6 +50,6 @@ class MakeDiscoverCommand extends MakeCommand
         $baseClassPath = $refClass->getProperty('baseClassPath');
         $baseClassPath->setAccessible(true);
         $baseClassPath->setValue($this->parser, $this->class_path);
-        parent::createClass($force, $inline);
+        return parent::createClass($force, $inline);
     }
 }
