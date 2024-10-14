@@ -11,7 +11,7 @@ class LaravelLivewireDiscoverManager extends LivewireManager
      */
     public function componentNamespace(string $namespace, string $prefix): void
     {
-        $this->discover($namespace, $prefix);
+        $this->discover($prefix, $namespace);
     }
 
     /**
