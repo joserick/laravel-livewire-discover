@@ -27,17 +27,7 @@ class LaravelLivewireDiscoverData
     public function add(string $prefix, string|array $class_namespace, ?string $class_path = null): void
     {
         if (is_array($class_namespace)) {
-            if (count($class_namespace) === 2) {
-                if (isset($class_namespace[0]) && isset($class_namespace[1])) {
-                    $this->add($prefix, $class_namespace[0], $class_namespace[1]);
-                } elseif (isset($class_namespace['class_namespace']) && isset($class_namespace['class_path'])) {
-                    $this->put($prefix, $class_namespace);
-                } else {
-                    throw new \Exception("The $prefix prefix config must have class_namespace and class_path elements");
-                }
-            } else {
-                throw new \Exception("The $prefix prefix config must have 2 elements");
-            }
+            $this->addFromArray($prefix, $class_namespace);
         } elseif ($class_path) {
             $this->put($prefix, [
                 'class_namespace' => $class_namespace,
@@ -56,6 +46,27 @@ class LaravelLivewireDiscoverData
         return $this->class_namespaces;
     }
 
+    /**
+     * Get the class namespace for the given prefix.
+     */
+    private function addFromArray(string $prefix, array $class_namespace): void
+    {
+        if (count($class_namespace) === 2) {
+            if (isset($class_namespace[0]) && isset($class_namespace[1])) {
+                $this->add($prefix, $class_namespace[0], $class_namespace[1]);
+            } elseif (isset($class_namespace['class_namespace']) && isset($class_namespace['class_path'])) {
+                $this->put($prefix, $class_namespace);
+            } else {
+                throw new \Exception("The $prefix prefix config must have class_namespace and class_path elements");
+            }
+        } else {
+            throw new \Exception("The $prefix prefix config must have 2 elements");
+        }
+    }
+
+    /**
+     * Put the class namespace in the collection.
+     */
     private function put(string $prefix, string|array $class_namespace): void
     {
         if (is_array($class_namespace)) {
