@@ -28,14 +28,20 @@ class LaravelLivewireDiscoverData
     {
         if (is_array($class_namespace)) {
             $this->addFromArray($prefix, $class_namespace);
-        } elseif ($class_path) {
+        } else {
             $this->put($prefix, [
                 'class_namespace' => $class_namespace,
                 'class_path' => $class_path,
             ]);
-        } else {
-            $this->put($prefix, $class_namespace);
         }
+    }
+
+    /**
+     * Clean the class namespaces collection.
+     */
+    public function clean(): void
+    {
+        $this->class_namespaces = collect();
     }
 
     /**
