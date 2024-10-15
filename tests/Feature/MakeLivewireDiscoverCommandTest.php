@@ -10,7 +10,7 @@ it('executes livewire-discover:make command', function () {
 
     LaravelLivewireDiscover::add($this->PREFIX, $this->NAMESPACE, $this->CLASS_PATH);
 
-    $this->artisan('livewire-discover:make TestComponent --prefix='.$this->PREFIX)
+    $this->artisan('livewire-discover:make TestsComponents.TestComponent --prefix='.$this->PREFIX)
         ->expectsOutputToContain('COMPONENT CREATED');
 
     LaravelLivewireDiscover::clean();

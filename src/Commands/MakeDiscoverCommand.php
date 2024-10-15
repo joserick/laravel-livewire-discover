@@ -29,7 +29,7 @@ class MakeDiscoverCommand extends MakeCommand
 
         $prefix = $this->option('prefix') ?? $this->choice('Select the prefix to use', $class_namespaces->keys()->toArray());
 
-        if (is_array($class_namespaces[$prefix]) && isset($class_namespaces[$prefix]['class_path'])) {
+        if ($class_namespaces[$prefix]['class_path']) {
             $this->class_path = $class_namespaces[$prefix]['class_path'];
         } else {
             $this->error("There is no class path defined for the prefix $prefix");
@@ -37,7 +37,7 @@ class MakeDiscoverCommand extends MakeCommand
             return;
         }
 
-        config(['livewire.class_namespace' => $class_namespaces[$prefix]['class_namespace'] ?? $class_namespaces[$prefix]]);
+        config(['livewire.class_namespace' => $class_namespaces[$prefix]['class_namespace']]);
 
         $this->input->setOption('inline', true);
 
@@ -50,6 +50,7 @@ class MakeDiscoverCommand extends MakeCommand
         $baseClassPath = $refClass->getProperty('baseClassPath');
         $baseClassPath->setAccessible(true);
         $baseClassPath->setValue($this->parser, $this->class_path);
+
         return parent::createClass($force, $inline);
     }
 }
