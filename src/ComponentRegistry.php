@@ -8,10 +8,13 @@ class ComponentRegistry extends LivewireComponentRegistry
 {
     protected function generateNameFromClass($class)
     {
-        if ($alias = ComponentResolver::getAliasFromClass($class)) {
-            return $alias;
-        }
+        return ComponentResolver::getAliasFromClass($class,
+            fn ($class) => parent::generateNameFromClass($class));
+    }
 
-        return parent::generateNameFromClass($class);
+    protected function generateClassFromName($name)
+    {
+        return ComponentResolver::getClassFromAlias($name) ?:
+            parent::generateClassFromName($name);
     }
 }
