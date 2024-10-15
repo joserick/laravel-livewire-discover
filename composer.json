@@ -16,11 +16,17 @@
     },
     "require-dev": {
         "orchestra/testbench": "^8.5",
-        "laravel/pint": "^1.18"
+        "laravel/pint": "^1.18",
+        "pestphp/pest": "^2.35"
     },
     "autoload": {
         "psr-4": {
             "Joserick\\LaravelLivewireDiscover\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Joserick\\LaravelLivewireDiscover\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -29,8 +35,17 @@
                 "Joserick\\LaravelLivewireDiscover\\LaravelLivewireDiscoverServiceProvider"
             ],
             "aliases": {
-                "LaravelLivewireDiscover": "Joserick\\LaravelLivewireDiscover\\Facades\\LaravelLivewireDiscover"
+                "LaravelLivewireDiscover": "Joserick\\LaravelLivewireDiscover\\LaravelLivewireDiscover"
             }
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }
