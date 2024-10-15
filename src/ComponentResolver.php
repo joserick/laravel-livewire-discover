@@ -5,17 +5,13 @@ namespace Joserick\LaravelLivewireDiscover;
 class ComponentResolver
 {
     /**
-     * Get the prefix from the class.
+     * Get the prefix and namespace from the class.
      */
-    public static function getPrefixFromClass(string $class): string|bool
+    public static function getPrefixAndNamespaceFromClass(string $class): array|bool
     {
-        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $class_namespace) {
-            if (is_array($class_namespace)) {
-                $class_namespace = $class_namespace['class_namespace'];
-            }
-
-            if (str($class)->startsWith($class_namespace)) {
-                return $prefix;
+        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $data) {
+            if (str($class)->startsWith($data['class_namespace'])) {
+                return [$prefix, $data['class_namespace']];
             }
         }
 
@@ -25,25 +21,20 @@ class ComponentResolver
     /**
      * Get the alias from the class.
      */
-    public static function getAliasFromClass(string $class): string|bool
+    public static function getAliasFromClass(string $class, callable $generate_name_from_class): string
     {
-        if ($prefix = self::getPrefixFromClass($class)) {
-            return $prefix.'.'.str($class)->afterLast('\\')->kebab();
+        if ([$prefix, $namespace] = self::getPrefixAndNamespaceFromClass($class)) {
+            $original_namespace = config('livewire.class_namespace');
+
+            config(['livewire.class_namespace' => $namespace]);
+            $alias = $prefix.'.'.$generate_name_from_class($class);
+
+            config(['livewire.class_namespace', $original_namespace]);
+
+            return $alias;
         }
 
-        return false;
-    }
-
-    /**
-     * Get the class from the name component.
-     */
-    public static function getClassFromNameComponent(string $name_component): string|bool
-    {
-        $class = collect(str($name_component)->explode('.'))
-            ->map(fn ($segment) => (string) str($segment)->studly())
-            ->join('\\');
-
-        return class_exists($class) ? $class : false;
+        return $generate_name_from_class($class);
     }
 
     /**
@@ -51,17 +42,11 @@ class ComponentResolver
      */
     public static function getClassFromAlias(string $alias): string|bool
     {
-        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $class_namespace) {
+        foreach (LaravelLivewireDiscover::getClassNamespaces() as $prefix => $data) {
             if (str($alias)->startsWith($prefix)) {
-                if (is_array($class_namespace)) {
-                    $class_namespace = $class_namespace['class_namespace'];
-                }
-
-                $class = $class_namespace.'\\'.str($alias)->substr(strlen($prefix) + 1)->studly();
-
-                if (str($class)->contains('.')) {
-                    return self::getClassFromNameComponent($class);
-                }
+                $class = self::dotNotationToNamespacePath(
+                    $data['class_namespace'].'\\'.str($alias)->substr(strlen($prefix) + 1)->studly()
+                );
 
                 return class_exists($class) ? $class : false;
             }
@@ -71,20 +56,20 @@ class ComponentResolver
     }
 
     /**
-     * Resolve the class from alias or name component.
+     * Resolve the class from alias.
      */
-    public static function resolve(string &$alias_or_name_component): string|bool
+    public static function resolve(string $alias): string|bool
     {
-        if ($class = self::getClassFromAlias($alias_or_name_component)) {
-            return $class;
-        }
+        return self::getClassFromAlias($alias) ?: false;
+    }
 
-        if ($class = self::getClassFromNameComponent($alias_or_name_component)) {
-            $alias_or_name_component = self::getAliasFromClass($class);
-
-            return $class;
-        }
-
-        return false;
+    /**
+     * Convert dot notation to namespace path.
+     */
+    protected static function dotNotationToNamespacePath(string $name_component): string
+    {
+        return str($name_component)->explode('.')
+            ->map(fn ($segment) => str($segment)->studly())
+            ->join('\\');
     }
 }
