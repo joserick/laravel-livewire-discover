@@ -76,7 +76,7 @@ If you would like to automatically create components in a specific directory bas
 ``` php
 public function boot(): void
 {
-  Livewire::discover('my-components', 'Namespaces\\Livewire', '/path/livewire');
+  Livewire::discover('my-components', 'Namespaces\\Livewire', app_path('/path/livewire'));
 }
 ```
 ## Creating components
@@ -94,6 +94,7 @@ php artisan make:livewire-discover Auth\\RegisterAdmin
 php artisan make:livewire-discover auth.register-admin
 ```
 ## Migration to v1
+### Attributes Reversed
 Replace `Livewire::discover` for `Livewire::componentNamespace` since the attributes in v1 are reversed but the `componentNamespace` function maintains the structure of previous versions.
 ``` php
 Livewire::discover('Namespaces\\Livewire', 'my-components');
@@ -104,6 +105,9 @@ Livewire::componentNamespace('Namespaces\\Livewire', 'my-components');
 ```
 or in any case to maintain the use of the `discover()` function you can invert the parameters.
 
+### Rename Config File
+The configuration file name has changed from `laravel-livewire-discover.php` to simply `livewire-discover-php`
+### Dot-Notation
 Change in concatenation of prefixes with class name, previously it was concatenated using the "-" notation, now the dot-notation is used, so it must be changed in all calls to Livewire-Discover components
 ``` html
 <livewire:components-devices />

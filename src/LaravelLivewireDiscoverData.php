@@ -16,7 +16,7 @@ class LaravelLivewireDiscoverData
     {
         $this->class_namespaces = collect();
 
-        foreach (config('laravel-livewire-discover.class_namespaces') as $prefix => $class_namespace) {
+        foreach (config('livewire-discover.class_namespaces') as $prefix => $class_namespace) {
             $this->add($prefix, $class_namespace);
         }
     }
