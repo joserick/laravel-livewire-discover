@@ -74,12 +74,25 @@ php artisan livewire:layout
 ## Config path for component creation
 If you would like to automatically create components in a specific directory based on the prefix, you can configure it in the following way:
 ``` php
-public function boot(): void
-{
-  Livewire::discover('my-components', 'Namespaces\\Livewire', app_path('/path/livewire'));
-}
+  Livewire::discover(
+	  'my-components',
+	  'Namespaces\\Livewire',
+	  app_path('/Path/Livewire') // <-- Components directory path
+  );
 ```
-## Creating components
+Now when you create the component it will be created in the path you have specified.
+
+Do you also want it to create the `view` at a specific route? Just add the view route and it will automatically create it, simple as that:
+``` php
+  Livewire::discover(
+	  'my-components',
+	  'Namespaces\\Livewire',
+	  app_path('/path/Livewire'),
+	  resource_path('/views/path/livewire'), <-- Components views path
+  );
+```
+Remember that these are examples, you can specify any path within your project and it will create it.
+## Create your components quickly
 You can create the files automatically using the following Artisan command. In the process it will ask you for the prefix to use, don't forget to put the path in the prefix settings.
 ```bash
 php artisan make:livewire-discover RegisterAdmin
@@ -93,6 +106,7 @@ You may use namespace syntax or dot-notation to create your components in sub-di
 php artisan make:livewire-discover Auth\\RegisterAdmin
 php artisan make:livewire-discover auth.register-admin
 ```
+Also if you don't want it to constantly ask you which prefix to select you can pass it directly with the `--prefix` attribute
 ## Migration to v1
 ### Attributes Reversed
 Replace `Livewire::discover` for `Livewire::componentNamespace` since the attributes in v1 are reversed but the `componentNamespace` function maintains the structure of previous versions.
