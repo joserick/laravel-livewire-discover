@@ -20,8 +20,8 @@ public function boot(): void
 {
   // Load multiples namespace for Livewire components.
   Livewire::discovers([
-    'my-components', 'Namespaces\\Livewire',
-    'new-components', 'User\\Repository\\Livewire',
+    'my-components' => 'Namespaces\\Livewire',
+    'new-components' => 'User\\Repository\\Livewire',
   ]);
 
   // Or individually
@@ -39,7 +39,7 @@ public function boot(): void
   // ...
 }
 ```
-**Or** use the config: *'config/laravel-livewire-discover.php'*
+Or use the config: *'config/laravel-livewire-discover.php'*
 ``` bash
 php artisan vendor:publish --tag livewire-discover-config
 ```
@@ -71,7 +71,8 @@ Route::get('/devices_table', DevicesTable::class); // resolve name new-component
 ```bash
 php artisan livewire:layout
 ```
-## Config path for component creation
+## Extra
+### Config path for component creation
 If you would like to automatically create components in a specific directory based on the prefix, you can configure it in the following way:
 ``` php
   Livewire::discover(
@@ -92,7 +93,7 @@ Do you also want it to create the `view` at a specific route? Just add the view 
   );
 ```
 Remember that these are examples, you can specify any path within your project and it will create it.
-## Create your components quickly
+### Create your components quickly
 You can create the files automatically using the following Artisan command. In the process it will ask you for the prefix to use, don't forget to put the path in the prefix settings.
 ```bash
 php artisan make:livewire-discover RegisterAdmin
