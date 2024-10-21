@@ -17,9 +17,13 @@ class LaravelLivewireDiscoverManager extends LivewireManager
     /**
      * Discover the components of the given namespace.
      */
-    public function discover(string $prefix, string|array $namespace, ?string $class_path = null): void
-    {
-        LaravelLivewireDiscover::add($prefix, $namespace, $class_path);
+    public function discover(
+        string $prefix,
+        string|array $namespace,
+        ?string $class_path = null,
+        ?string $view_path = null,
+    ): void {
+        LaravelLivewireDiscover::add($prefix, $namespace, $class_path, $view_path);
     }
 
     /**

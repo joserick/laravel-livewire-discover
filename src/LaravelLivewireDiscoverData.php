@@ -24,14 +24,27 @@ class LaravelLivewireDiscoverData
     /**
      * Add a class/namespace prefix to the resolver.
      */
-    public function add(string $prefix, string|array $class_namespace, ?string $class_path = null): void
-    {
+    public function add(
+        string $prefix,
+        string|array $class_namespace,
+        ?string $class_path = null,
+        ?string $view_path = null,
+    ): void {
         if (is_array($class_namespace)) {
             $this->addFromArray($prefix, $class_namespace);
         } else {
+            if ($class_path) {
+                $class_path = rtrim(realpath($class_path), DIRECTORY_SEPARATOR).'/';
+            }
+
+            if ($view_path) {
+                $view_path = rtrim(realpath($view_path), DIRECTORY_SEPARATOR).'/';
+            }
+
             $this->put($prefix, [
                 'class_namespace' => $class_namespace,
                 'class_path' => $class_path,
+                'view_path' => $view_path,
             ]);
         }
     }
@@ -53,20 +66,31 @@ class LaravelLivewireDiscoverData
     }
 
     /**
-     * Get the class namespace for the given prefix.
+     * Add config of prefix from array.
      */
     private function addFromArray(string $prefix, array $class_namespace): void
     {
-        if (count($class_namespace) === 2) {
-            if (isset($class_namespace[0]) && isset($class_namespace[1])) {
-                $this->add($prefix, $class_namespace[0], $class_namespace[1]);
-            } elseif (isset($class_namespace['class_namespace']) && isset($class_namespace['class_path'])) {
-                $this->put($prefix, $class_namespace);
-            } else {
-                throw new \Exception("The $prefix prefix config must have class_namespace and class_path elements");
-            }
+        if (empty($class_namespace) || count($class_namespace) > 3) {
+            throw new \Exception("The $prefix prefix configuration must have at least 1 or at most 3 elements");
+        }
+
+        $provided_keys = array_keys($class_namespace);
+
+        // Verificar si el array es numérico
+        if (array_keys($provided_keys) === $provided_keys) {
+            $this->add($prefix, ...$class_namespace);
         } else {
-            throw new \Exception("The $prefix prefix config must have 2 elements");
+            $required_keys = ['class_namespace', 'class_path', 'view_path'];
+
+            foreach ($provided_keys as $key) {
+                if (! in_array($key, $required_keys)) {
+                    throw new \Exception("Invalid key $key in $prefix prefix config");
+                }
+            }
+
+            $this->add($prefix, ...array_values(
+                array_intersect_key($class_namespace, array_flip($required_keys))
+            ));
         }
     }
 

@@ -19,7 +19,11 @@ class MakeDiscoverCommand extends MakeCommand
 
     protected Collection $class_namespaces;
 
-    protected ?string $class_path;
+    protected ReflectionClass $ref_class;
+
+    protected string $class_path;
+
+    protected ?string $view_path = null;
 
     public function handle()
     {
@@ -43,19 +47,35 @@ class MakeDiscoverCommand extends MakeCommand
 
         config(['livewire.class_namespace' => $this->class_namespaces[$prefix]['class_namespace']]);
 
-        $this->input->setOption('inline', true);
+        if ($this->class_namespaces[$prefix]['view_path']) {
+            $this->view_path = $this->class_namespaces[$prefix]['view_path'];
+        } else {
+            $this->input->setOption('inline', true);
+        }
+
+        $this->ref_class = new ReflectionClass(ComponentParser::class);
 
         parent::handle();
     }
 
     protected function createClass($force = false, $inline = false)
     {
-        $refClass = new ReflectionClass(ComponentParser::class);
-        $baseClassPath = $refClass->getProperty('baseClassPath');
-        $baseClassPath->setAccessible(true);
-        $baseClassPath->setValue($this->parser, $this->class_path);
+        $base_class_path = $this->ref_class->getProperty('baseClassPath');
+        $base_class_path->setAccessible(true);
+        $base_class_path->setValue($this->parser, $this->class_path);
 
         return parent::createClass($force, $inline);
+    }
+
+    protected function createView($force = false, $inline = false)
+    {
+        if ($this->view_path) {
+            $base_class_path = $this->ref_class->getProperty('baseViewPath');
+            $base_class_path->setAccessible(true);
+            $base_class_path->setValue($this->parser, $this->view_path);
+        }
+
+        return parent::createView($force, $inline);
     }
 
     public function isFirstTimeMakingAComponent()
