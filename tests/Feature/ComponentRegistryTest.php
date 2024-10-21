@@ -1,7 +1,7 @@
 <?php
 
-use Livewire\Mechanisms\ComponentRegistry;
 use Joserick\LaravelLivewireDiscover\LaravelLivewireDiscover;
+use Livewire\Mechanisms\ComponentRegistry;
 
 it('generates alias from class', function () {
     LaravelLivewireDiscover::add($this->PREFIX, $this->NAMESPACE);

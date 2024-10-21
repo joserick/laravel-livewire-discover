@@ -2,7 +2,6 @@
 
 namespace Joserick\LaravelLivewireDiscover;
 
-use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use Livewire\LivewireManager;
 use Livewire\Mechanisms\ComponentRegistry as LivewireComponentRegistry;
