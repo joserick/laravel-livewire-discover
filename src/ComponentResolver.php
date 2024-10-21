@@ -60,7 +60,7 @@ class ComponentResolver
      */
     public static function resolve(string $alias): string|bool
     {
-        return self::getClassFromAlias($alias) ?: false;
+        return self::getClassFromAlias($alias);
     }
 
     /**
