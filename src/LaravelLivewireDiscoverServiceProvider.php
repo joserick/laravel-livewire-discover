@@ -5,6 +5,7 @@ namespace Joserick\LaravelLivewireDiscover;
 use Livewire\Livewire;
 use Livewire\LivewireManager;
 use Livewire\Mechanisms\ComponentRegistry as LivewireComponentRegistry;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -17,13 +18,18 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-livewire-discover')
+            ->publishesServiceProvider('LivewireDiscoverServiceProvider')
+            ->hasInstallCommand([$this, 'installConfig'])
             ->hasConfigFile()
             ->hasCommands(
                 Commands\MakeDiscoverCommand::class,
                 Commands\MakeLivewireDiscoverCommand::class,
             );
+    }
 
-        $this->app->alias(LaravelLivewireDiscoverData::class, 'laravel-livewire-discover');
+    public function packageRegistered(): void
+    {
+        $this->app->alias(LaravelLivewireDiscoverData::class, $this->package->name);
 
         $this->app->singleton(LaravelLivewireDiscoverData::class);
 
@@ -40,5 +46,15 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
     public function bootingPackage(): void
     {
         Livewire::resolveMissingComponent([ComponentResolver::class, 'resolve']);
+    }
+
+    /**
+     * Installation configuration for command.
+     */
+    public function installConfig(InstallCommand $install_command): void
+    {
+        $install_command->copyAndRegisterServiceProviderInApp()
+            ->askToStarRepoOnGitHub('joserick/'.$this->package->name)
+            ->publishConfigFile();
     }
 }

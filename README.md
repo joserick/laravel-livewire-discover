@@ -7,14 +7,17 @@ Automatically discover and load/register multiple/different class namespaces for
 
 ## Installation
 
-You can install the package via composer:
-
+You can add the package via composer:
 ``` bash
 composer require joserick/laravel-livewire-discover
 ```
+And then install the package with artisan:
+```bash
+php artisan livewire-discover:install
+```
 ## Enjoying this package? [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/joserick)
 ## Config
-Add to *AppServiceProvider.php*
+Add to *LivewireDiscoverServiceProvider.php*
 ``` php
 public function boot(): void
 {
@@ -39,10 +42,7 @@ public function boot(): void
   // ...
 }
 ```
-Or use the config: *'config/laravel-livewire-discover.php'*
-``` bash
-php artisan vendor:publish --tag livewire-discover-config
-```
+Or use the config: *'config/livewire-discover.php'*
 ``` php
 // Load the namespace to Livewire components.
 'class_namespaces' => [

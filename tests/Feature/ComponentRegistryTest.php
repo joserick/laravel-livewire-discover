@@ -3,6 +3,12 @@
 use Joserick\LaravelLivewireDiscover\LaravelLivewireDiscover;
 use Livewire\Mechanisms\ComponentRegistry;
 
+it('should run the command install', function () {
+    $this->artisan('livewire-discover:install')
+        ->expectsConfirmation('Would you like to star our repo on GitHub?')
+        ->assertExitCode(0);
+});
+
 it('generates alias from class', function () {
     LaravelLivewireDiscover::add($this->PREFIX, $this->NAMESPACE);
 
