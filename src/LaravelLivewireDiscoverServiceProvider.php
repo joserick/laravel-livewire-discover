@@ -33,8 +33,8 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(LaravelLivewireDiscoverData::class);
 
-        $this->app->extend(LivewireManager::class, function () {
-            return new LaravelLivewireDiscoverManager;
+        $this->app->extend(LivewireManager::class, function (LivewireManager $livewireManager) {
+            return new LaravelLivewireDiscoverManager($livewireManager);
         });
 
         $this->app->instance(LivewireComponentRegistry::class, new ComponentRegistry);

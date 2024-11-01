@@ -4,8 +4,16 @@ namespace Joserick\LaravelLivewireDiscover;
 
 use Livewire\LivewireManager;
 
-class LaravelLivewireDiscoverManager extends LivewireManager
+class LaravelLivewireDiscoverManager
 {
+    /**
+     * Create a new instance.
+     */
+    public function __construct(protected LivewireManager $livewireManager)
+    {
+        //
+    }
+
     /**
      * Add a class / namespace prefix to the resolver.
      */
@@ -34,5 +42,13 @@ class LaravelLivewireDiscoverManager extends LivewireManager
         foreach ($discovers as $prefix => $namespace) {
             $this->discover($prefix, $namespace);
         }
+    }
+
+    /**
+     * Call the LivewireManager methods.
+     */
+    public function __call($method, $arguments)
+    {
+        return call_user_func_array([$this->livewireManager, $method], $arguments);
     }
 }
