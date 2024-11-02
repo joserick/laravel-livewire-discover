@@ -42,7 +42,7 @@ class LaravelLivewireDiscoverData
             }
 
             $this->put($prefix, [
-                'class_namespace' => $class_namespace,
+                'class_namespace' => rtrim($class_namespace, '\\'),
                 'class_path' => $class_path,
                 'view_path' => $view_path,
             ]);
@@ -76,7 +76,6 @@ class LaravelLivewireDiscoverData
 
         $provided_keys = array_keys($class_namespace);
 
-        // Verificar si el array es numérico
         if (array_keys($provided_keys) === $provided_keys) {
             $this->add($prefix, ...$class_namespace);
         } else {
@@ -99,11 +98,6 @@ class LaravelLivewireDiscoverData
      */
     private function put(string $prefix, string|array $class_namespace): void
     {
-        if (is_array($class_namespace)) {
-            $class_namespace['class_path'] =
-                Str::finish($class_namespace['class_path'], '/');
-        }
-
         $this->class_namespaces->put($prefix, $class_namespace);
     }
 }
