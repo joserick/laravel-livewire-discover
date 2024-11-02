@@ -6,12 +6,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Joserick\LaravelLivewireDiscover\LaravelLivewireDiscover;
 use Livewire\Features\SupportConsoleCommands\Commands\ComponentParser;
-use Livewire\Features\SupportConsoleCommands\Commands\MakeCommand;
+use Livewire\Features\SupportConsoleCommands\Commands\MakeCommand as LivewireMakeCommand;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'livewire-discover:make')]
-class MakeDiscoverCommand extends MakeCommand
+class MakeCommand extends LivewireMakeCommand
 {
     protected $signature = 'livewire-discover:make {name} {--prefix= : The prefix to use} {--force} {--inline} {--test} {--pest} {--stub= : If you have several stubs, stored in subfolders }';
 
