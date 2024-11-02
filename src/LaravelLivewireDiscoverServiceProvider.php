@@ -22,6 +22,7 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             ->hasInstallCommand([$this, 'installConfig'])
             ->hasConfigFile()
             ->hasCommands(
+                Commands\ListCommand::class,
                 Commands\MakeCommand::class,
                 Commands\MakeLivewireDiscoverCommand::class,
             );
