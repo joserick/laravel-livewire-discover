@@ -26,7 +26,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Joserick\\LaravelLivewireDiscover\\Tests\\": "tests/"
+            "Joserick\\LaravelLivewireDiscover\\Tests\\": "tests/",
+            "App\\": "vendor/orchestra/testbench-core/laravel/app"
         }
     },
     "extra": {

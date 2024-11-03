@@ -8,10 +8,10 @@ it('executes livewire-discover:make command', function () {
     File::shouldReceive('exists')->andReturn(false);
     File::shouldReceive('isDirectory')->andReturn(true);
 
-    LaravelLivewireDiscover::add($this->PREFIX, $this->NAMESPACE, $this->CLASS_PATH);
+    LaravelLivewireDiscover::shouldReceive('getClassNamespaces')
+        ->once()
+        ->andReturn($this->CLASS_NAMESPACES);
 
     $this->artisan('livewire-discover:make TestsComponents.TestComponent --prefix='.$this->PREFIX)
         ->expectsOutputToContain('COMPONENT CREATED');
-
-    LaravelLivewireDiscover::clean();
 });
