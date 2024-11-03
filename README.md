@@ -72,7 +72,25 @@ Route::get('/devices_table', DevicesTable::class); // resolve name new-component
 php artisan livewire:layout
 ```
 ## Extra
-### Config path for component creation
+### Displays the list of loaded namespaces (prefix, their aliases and paths)
+If you want to check if all the namespaces are loading correctly you can run:
+```bash
+php artisan livewire-discover:list
+```
+Which will show you a table with all the information:
+```bash
+Livewire-Discover namespaces list:
+
+Prefix: 'my-components' (Namespaces\\Livewire)
+There is no "class path" defined for the config for prefix 'my-components'
+Getting the "class path" from the composer autoload file
++-----------------------+-----------------------------------------------+
+| Alias                 | Paths                                         |
++-------------------------------------------+---------------------------+
+| my-components.devices | /var/www/html/namespaces/livewire/devices.php |
++-----------------------+-----------------------------------------------+
+```
+### Config 'class path' for component creation
 If you would like to automatically create components in a specific directory based on the prefix, you can configure it in the following way:
 ``` php
   Livewire::discover(
