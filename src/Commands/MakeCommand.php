@@ -13,6 +13,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'livewire-discover:make')]
 class MakeCommand extends LivewireMakeCommand
 {
+    use ToolCommand;
+
     protected $signature = 'livewire-discover:make {name} {--prefix= : The prefix to use} {--force} {--inline} {--test} {--pest} {--stub= : If you have several stubs, stored in subfolders }';
 
     protected $description = 'Create a new Livewire Discover component';
@@ -40,7 +42,12 @@ class MakeCommand extends LivewireMakeCommand
         if ($this->class_namespaces[$prefix]['class_path']) {
             $this->class_path = $this->class_namespaces[$prefix]['class_path'];
         } else {
-            $this->error("There is no class path defined for the prefix $prefix");
+            $this->class_path = $this->getClassPathFromNamespace(
+                $this->class_namespaces[$prefix]['class_namespace'], $prefix);
+        }
+
+        if (! $this->class_path) {
+            $this->error("Not found the \"class path\" in the composer autoload file for the namespace {$this->class_namespaces[$prefix]['class_namespace']}");
 
             return;
         }
