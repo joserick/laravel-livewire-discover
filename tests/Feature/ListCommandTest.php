@@ -14,16 +14,9 @@ it('should display an error when there are no Livewire-Discover prefixes defined
 });
 
 it('should list Livewire Discover components', function () {
-    $classNamespaces = collect([
-        'app-livewire' => [
-            'class_namespace' => 'App\\Livewire',
-            'class_path' => base_path('app/Livewire'),
-        ],
-    ]);
-
     LaravelLivewireDiscover::shouldReceive('getClassNamespaces')
         ->once()
-        ->andReturn($classNamespaces);
+        ->andReturn($this->CLASS_NAMESPACES);
 
     File::shouldReceive('isDirectory')
         ->once()
@@ -31,17 +24,20 @@ it('should list Livewire Discover components', function () {
 
     File::shouldReceive('allFiles')
         ->once()
-        ->with(base_path('app/Livewire'))
+        ->with($this->NAMESPACE_PATH)
         ->andReturn([
-            new SplFileInfo(base_path('app/Livewire/ExampleComponent.php')),
+            new SplFileInfo(app_path('Tests/Components/TestComponent.php')),
         ]);
 
     $this->artisan('livewire-discover:list')
-        ->expectsOutput('List of Livewire Discover components:')
+        ->expectsOutput('Livewire-Discover namespaces list:')
         ->expectsTable(
-            ['Alias', 'Paths'],
+            ['Alias', 'Path'],
             [
-                ['app-livewire.example-component', base_path('app/Livewire/ExampleComponent.php')],
+                [
+                    $this->PREFIX.'.components.test-component',
+                    'app/Tests/Components/TestComponent.php',
+                ],
             ]
         )
         ->assertExitCode(0);
