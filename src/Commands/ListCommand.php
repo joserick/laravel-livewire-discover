@@ -23,6 +23,7 @@ class ListCommand extends Command
 
         if ($class_namespaces->isEmpty()) {
             $this->error('There are no Livewire-Discover prefixes defined.');
+
             return;
         }
 
@@ -34,14 +35,15 @@ class ListCommand extends Command
             }
         }
 
-        if (!$composerClassLoader) {
+        if (! $composerClassLoader) {
             $this->error('Composer ClassLoader not found.');
+
             return;
         }
 
         $this->prefixes = $composerClassLoader->getPrefixesPsr4();
 
-        $this->info('List of Livewire Discover components:');
+        $this->info('Livewire-Discover namespaces list:');
 
         foreach ($class_namespaces as $prefix => $class_namespace) {
             $this->newLine();
@@ -50,18 +52,20 @@ class ListCommand extends Command
             if (isset($class_namespace['class_path'])) {
                 $path = $class_namespace['class_path'];
             } else {
-                $this->warn("There is no \"class path\" defined for the config for prefix $prefix");
+                $this->warn("There is no \"class path\" defined for the config for prefix \"$prefix\"");
                 $this->comment('Getting the "class path" from the composer autoload file');
                 $path = $this->getClassPathFromNamespace($class_namespace['class_namespace']);
             }
 
-            if(!$path) {
+            if (! $path) {
                 $this->error("Not found the \"class path\" in the composer autoload file for the namespace {$class_namespace['class_namespace']}");
+
                 continue;
             }
 
-            if (!File::isDirectory($path)) {
+            if (! File::isDirectory($path)) {
                 $this->error("The directory $path of '{$class_namespace['class_namespace']}' does not exist or is not a directory.");
+
                 continue;
             }
 
@@ -71,6 +75,7 @@ class ListCommand extends Command
 
             if (empty($phpFiles)) {
                 $this->warn("There are no Class files in the directory $path of '{$class_namespace['class_namespace']}'");
+
                 continue;
             }
 
@@ -92,11 +97,13 @@ class ListCommand extends Command
         }
     }
 
-    protected function getClassPathFromNamespace(string $namespace): ?string {
+    protected function getClassPathFromNamespace(string $namespace): ?string
+    {
         foreach ($this->prefixes as $prefix => $dirs) {
             if (strpos($namespace, $prefix) === 0) {
                 $relativePath = str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, strlen($prefix)));
-                return realpath(rtrim($dirs[0], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $relativePath);
+
+                return realpath(rtrim($dirs[0], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$relativePath);
             }
         }
 

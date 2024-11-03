@@ -17,8 +17,8 @@ it('should list Livewire Discover components', function () {
     $classNamespaces = collect([
         'app-livewire' => [
             'class_namespace' => 'App\\Livewire',
-            'class_path' => base_path('app/Livewire')
-        ]
+            'class_path' => base_path('app/Livewire'),
+        ],
     ]);
 
     LaravelLivewireDiscover::shouldReceive('getClassNamespaces')
@@ -33,16 +33,16 @@ it('should list Livewire Discover components', function () {
         ->once()
         ->with(base_path('app/Livewire'))
         ->andReturn([
-            new SplFileInfo(base_path('app/Livewire/ExampleComponent.php'))
+            new SplFileInfo(base_path('app/Livewire/ExampleComponent.php')),
         ]);
 
     $this->artisan('livewire-discover:list')
-    ->expectsOutput('List of Livewire Discover components:')
-    ->expectsTable(
-        ['Alias', 'Paths'],
-        [
-            ['app-livewire.example-component', base_path('app/Livewire/ExampleComponent.php')]
-        ]
-    )
-    ->assertExitCode(0);
+        ->expectsOutput('List of Livewire Discover components:')
+        ->expectsTable(
+            ['Alias', 'Paths'],
+            [
+                ['app-livewire.example-component', base_path('app/Livewire/ExampleComponent.php')],
+            ]
+        )
+        ->assertExitCode(0);
 });

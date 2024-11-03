@@ -3,7 +3,6 @@
 namespace Joserick\LaravelLivewireDiscover;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class LaravelLivewireDiscoverData
 {
