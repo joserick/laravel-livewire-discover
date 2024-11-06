@@ -4,7 +4,7 @@ namespace Joserick\LaravelLivewireDiscover;
 
 use Livewire\LivewireManager;
 
-class LaravelLivewireDiscoverManager
+class LaravelLivewireDiscoverManager extends LaravelLivewireDiscover
 {
     /**
      * Create a new instance.
