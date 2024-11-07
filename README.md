@@ -72,7 +72,7 @@ Route::get('/devices_table', DevicesTable::class); // resolve name new-component
 php artisan livewire:layout
 ```
 ## Extra
-### Displays the list of loaded namespaces (prefix, their aliases and paths)
+### Displays the list of loaded namespaces (prefix, aliases and paths)
 If you want to check if all the namespaces are loading correctly you can run:
 ```bash
 php artisan livewire-discover:list
@@ -90,43 +90,47 @@ Getting the "class path" from the composer autoload file
 | my-components.devices | /var/www/html/namespaces/livewire/devices.php |
 +-----------------------+-----------------------------------------------+
 ```
-### Config 'class path' for component creation
-If you would like to automatically create components in a specific directory based on the prefix, you can configure it in the following way:
-``` php
-  Livewire::discover(
-	  'my-components',
-	  'Namespaces\\Livewire',
-	  app_path('/Path/Livewire') // <-- Components directory path
-  );
-```
-Now when you create the component it will be created in the path you have specified.
-
-Do you also want it to create the `view` at a specific route? Just add the view route and it will automatically create it, simple as that:
-``` php
-  Livewire::discover(
-	  'my-components',
-	  'Namespaces\\Livewire',
-	  app_path('/path/Livewire'),
-	  resource_path('/views/path/livewire'), <-- Components views path
-  );
-```
-Remember that these are examples, you can specify any path within your project and it will create it.
 ### Create your components quickly
-You can create the files automatically using the following Artisan command. In the process it will ask you for the prefix to use, don't forget to put the path in the prefix settings.
+You can create the files automatically using the following Artisan command. In the process it will ask you for the prefix to use.
 ```bash
+php artisan livewire-discover:make RegisterAdmin
+# Or
 php artisan make:livewire-discover RegisterAdmin
 ```
 If you prefer kebab-cased names, you can use them as well:
 ```bash
-php artisan make:livewire-discover register-admin
+php artisan livewire-discover:make register-admin
 ```
 You may use namespace syntax or dot-notation to create your components in sub-directories. For example, the following commands will create a `RegisterAdmin` component in the `Auth` sub-directory:
 ```bash
-php artisan make:livewire-discover Auth\\RegisterAdmin
-php artisan make:livewire-discover auth.register-admin
+php artisan livewire-discover:make Auth\\RegisterAdmin
+php artisan livewire-discover:make auth.register-admin
 ```
 Also if you don't want it to constantly ask you which prefix to select you can pass it directly with the `--prefix` attribute
+### Manually configure the 'classpath' for component creation and listing
+When automatically created components through the `artisan livewire-discover:make` this obtains the directory path based on 'Composer Autoload File' If for some reason it is not possible to do this, you can manually configure the path, adding it as the third parameter:
+``` php
+Livewire::discover(
+    'my-components',
+    'Namespaces\\Livewire',
+    app_path('/Path/Livewire') // <-- Components directory path
+);
+```
+Now when you create the component it will be created in the path you have specified.
+### Config 'view path' for component creation
+Do you also want it to create the `view` at a specific route? Just add the view route and it will automatically create it, simple as that:
+``` php
+Livewire::discover(
+    'my-components',
+    'Namespaces\\Livewire',
+    app_path('/Path/Livewire')
+    resource_path('/views/path/livewire'), <-- Components views path
+);
+```
+Remember that these are examples, you can specify any path within your project and it will create it.
 ## Migration to v1
+### Rename Config File
+The configuration file name has changed from `laravel-livewire-discover.php` to simply `livewire-discover-php`
 ### Attributes Reversed
 Replace `Livewire::discover` for `Livewire::componentNamespace` since the attributes in v1 are reversed but the `componentNamespace` function maintains the structure of previous versions.
 ``` php
@@ -137,9 +141,6 @@ to
 Livewire::componentNamespace('Namespaces\\Livewire', 'my-components');
 ```
 or in any case to maintain the use of the `discover()` function you can invert the parameters.
-
-### Rename Config File
-The configuration file name has changed from `laravel-livewire-discover.php` to simply `livewire-discover-php`
 ### Dot-Notation
 Change in concatenation of prefixes with class name, previously it was concatenated using the "-" notation, now the dot-notation is used, so it must be changed in all calls to Livewire-Discover components
 ``` html
