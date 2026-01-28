@@ -29,7 +29,7 @@ class ComponentResolver
             config(['livewire.class_namespace' => $namespace]);
             $alias = $prefix.'.'.$generate_name_from_class($class);
 
-            config(['livewire.class_namespace', $original_namespace]);
+            config(['livewire.class_namespace' => $original_namespace]);
 
             return $alias;
         }
