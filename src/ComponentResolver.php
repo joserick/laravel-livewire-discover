@@ -24,13 +24,13 @@ class ComponentResolver
     public static function getAliasFromClass(string $class, callable $generate_name_from_class): string
     {
         if ([$prefix, $namespace] = self::getPrefixAndNamespaceFromClass($class)) {
-            $original_namespace = config('livewire.class_namespace');
+            $generatedName = $generate_name_from_class($class);
 
-            config(['livewire.class_namespace' => $namespace]);
-            $alias = $prefix.'.'.$generate_name_from_class($class);
+            $namespaceDotNotation = str($namespace)->replace('\\', '.')->lower();
+            $generatedName = str($generatedName)->replaceFirst($namespaceDotNotation.'.', '');
 
-            config(['livewire.class_namespace' => $original_namespace]);
-
+            $alias = $prefix.'.'.$generatedName;
+            
             return $alias;
         }
 
