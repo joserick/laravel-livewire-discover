@@ -1,7 +1,8 @@
 <?php
 
 use Joserick\LaravelLivewireDiscover\LaravelLivewireDiscover;
-use Livewire\Mechanisms\ComponentRegistry;
+use Livewire\Finder\Finder;
+use Livewire\LivewireManager;
 
 it('should run the command install', function () {
     $this->artisan('livewire-discover:install')
@@ -13,13 +14,14 @@ it('generates alias from class', function () {
     LaravelLivewireDiscover::shouldReceive('getClassNamespaces')
         ->andReturn($this->CLASS_NAMESPACES);
 
-    $registry = $this->app->make(ComponentRegistry::class);
+    $finder = app(Finder::class);
+    $manager = app(LivewireManager::class);
 
-    $class = $registry->getClass($this->ALIAS);
-    $alias = $registry->getName($this->CLASS);
-    $discoverable = $registry->isDiscoverable(new $this->CLASS);
+    $class = $finder->resolveClassComponentClassName($this->ALIAS);
+    $alias = $finder->normalizeName($this->CLASS);
+    $discoverable = $manager->exists(new $this->CLASS);
 
-    expect($alias)->toBe($this->ALIAS);
-    expect($class)->toBe($this->CLASS);
-    expect($discoverable)->toBeTrue();
+    expect($alias)->toBe($this->ALIAS)
+        ->and($class)->toBe($this->CLASS)
+        ->and($discoverable)->toBeTrue();
 });

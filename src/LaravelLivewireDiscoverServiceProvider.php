@@ -4,7 +4,7 @@ namespace Joserick\LaravelLivewireDiscover;
 
 use Livewire\Livewire;
 use Livewire\LivewireManager;
-use Livewire\Mechanisms\ComponentRegistry as LivewireComponentRegistry;
+use Livewire\Finder\Finder;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -23,8 +23,8 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasCommands(
                 Commands\ListCommand::class,
-                Commands\MakeCommand::class,
-                Commands\MakeLivewireDiscoverCommand::class,
+                //Commands\MakeCommand::class,
+                //Commands\MakeLivewireDiscoverCommand::class,
             );
     }
 
@@ -38,7 +38,7 @@ class LaravelLivewireDiscoverServiceProvider extends PackageServiceProvider
             return new LaravelLivewireDiscoverManager($livewireManager);
         });
 
-        $this->app->instance(LivewireComponentRegistry::class, new ComponentRegistry);
+        $this->app->instance(Finder::class, new ComponentFinder);
     }
 
     /**
