@@ -1,7 +1,7 @@
 ![laravel_livewire_discover.jpg](https://joserick.com/livewire_discover.jpg)
 # Laravel Livewire Discover
 ![Packagist Downloads](https://img.shields.io/packagist/dt/joserick/laravel-livewire-discover?color=blue)   ![GitHub License](https://img.shields.io/github/license/joserick/laravel-livewire-discover) ![GitHub Release](https://img.shields.io/github/v/release/joserick/laravel-livewire-discover?color=2da711)
-> Notice: [Migration to v1.0](https://github.com/joserick/laravel-livewire-discover#migration-to-v1) || [I need previous version (v0.3)](https://github.com/joserick/laravel-livewire-discover#i-need-for-v0.3.2)
+> Notice: [Livewire v4](https://github.com/joserick/laravel-livewire-discover#livewire-v4) || [Migration to v1.0](https://github.com/joserick/laravel-livewire-discover#migration-to-v1) || [I need previous version (v0.3)](https://github.com/joserick/laravel-livewire-discover#i-need-for-v0.3.2)
 
 Automatically discover and load/register multiple/different class namespaces for Livewire components.
 
@@ -128,6 +128,22 @@ Livewire::discover(
 );
 ```
 Remember that these are examples, you can specify any path within your project and it will create it.
+## Livewire v4
+Livewire v4 introduced native support for registering prefixed component namespaces - the exact problem this package was created to solve. Therefore, **no Livewire v4 compatible version of this package will be released**; it remains in maintenance mode for Livewire v3 applications.
+
+Replace this package with the native Livewire v4 API:
+
+| laravel-livewire-discover (Livewire v3)                             | Native Livewire v4                                                                |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `Livewire::discover('my-components', 'Namespaces\\Livewire')`       | `Livewire::addNamespace('my-components', classNamespace: 'Namespaces\\Livewire')` |
+| `config/livewire-discover.php` (`class_namespaces`)                 | `Livewire::addNamespace()` calls in a service provider's `boot()`                 |
+| `<livewire:my-components.devices />`                                | `<livewire:my-components::devices />`                                             |
+| `php artisan livewire-discover:make devices --prefix=my-components` | `php artisan make:livewire my-components::devices --class`                        |
+| `Route::get('/devices', Devices::class)`                            | `Route::livewire('/devices', Devices::class)` (or keep `Route::get`)              |
+
+> **Note:** Pass `classPath:` (and optionally `classViewPath:`) to `Livewire::addNamespace()` so `make:livewire` creates the files in the right place - Livewire v4 does not resolve class paths from the Composer autoload file.
+
+> **Note:** Composer will not allow installing this package alongside Livewire v4 (`livewire/livewire: ^3.0`), so your Livewire v3 applications keep working as-is.
 ## Migration to v1
 ### Rename Config File
 The configuration file name has changed from `laravel-livewire-discover.php` to simply `livewire-discover-php`
